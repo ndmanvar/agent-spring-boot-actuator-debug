@@ -30,16 +30,23 @@ public class Sb2ActuatorServiceController {
         logger.warn("Warn message"); // warning message that will be sent to Sentry
 
         handledException();
+        unhandledError();
 
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 
     private void handledException() {
         try {
+            String teststr = "This should show up as a stack local";
             throw new Exception("This is a test exception.");
         } catch (Exception e) {
             // caught exception that will be sent to Sentry
-            logger.error("Caught exception!:", e.getCause());
+            logger.error("Caught exception!:", e);
         }
+    }
+
+    private void unhandledError() {
+        String teststr = "This should show up as a stack local";
+        throw new RuntimeException("Unhandled exception!");
     }
 }
